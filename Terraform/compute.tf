@@ -39,6 +39,7 @@ resource "oci_core_instance" "web_instance" {
   # ssh key and initial script: todo
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
+    user_data = base64encode(file("${path.module}/user_data/web_instance.sh"))
   }
 
   preserve_boot_volume = false
@@ -67,8 +68,10 @@ resource "oci_core_instance" "app_instance" {
     ocpus         = 2
   }
 
+ # ssh key and initial script: todo
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
+    user_data = base64encode(file("${path.module}/user_data/app_instance.sh"))
   }
 
   preserve_boot_volume = false
