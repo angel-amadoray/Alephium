@@ -3,7 +3,7 @@ data "oci_core_images" "ol8" {
   compartment_id           = var.compartment_ocid
   operating_system         = "Oracle Linux"
   operating_system_version = "8"
-  shape                    = "VM.Standard.A1.Flex"
+  shape                    = "VM.Standard.E2.1.Micro"
   sort_by                  = "TIMECREATED"
   sort_order               = "DESC"
 }
@@ -17,8 +17,10 @@ data "oci_identity_availability_domains" "ads" {
 resource "oci_core_instance" "web_instance" {
   compartment_id      = var.compartment_ocid
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  shape               = "VM.Standard.A1.Flex"
-  display_name        = "web_instance"
+  /*   shape               = "VM.Standard.A1.Flex" */
+  /* shape        = "VM.Standard.E2.1.Micro" */
+  shape        = data.oci_core_images.ol8.shape
+  display_name = "web_instance"
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.alephium_web_subnet.id
@@ -31,10 +33,12 @@ resource "oci_core_instance" "web_instance" {
     source_id   = data.oci_core_images.ol8.images[0].id
   }
 
-  shape_config {
+  // change to VM.Standard.E2.1.Micro
+  // cant change this values in this image
+  /* shape_config {
     memory_in_gbs = 12
     ocpus         = 2
-  }
+  } */
 
   # ssh key and initial script: todo
   metadata = {
@@ -49,7 +53,7 @@ resource "oci_core_instance" "web_instance" {
 resource "oci_core_instance" "app_instance" {
   compartment_id      = var.compartment_ocid
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  shape               = "VM.Standard.A1.Flex"
+  shape               = data.oci_core_images.ol8.shape
   display_name        = "app_instance"
 
   create_vnic_details {
@@ -63,10 +67,10 @@ resource "oci_core_instance" "app_instance" {
     source_id   = data.oci_core_images.ol8.images[0].id
   }
 
-  shape_config {
+  /* shape_config {
     memory_in_gbs = 12
     ocpus         = 2
-  }
+  } */
 
   # ssh key and initial script: todo
   metadata = {
