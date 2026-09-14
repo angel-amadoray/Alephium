@@ -6,6 +6,6 @@ resource "oci_objectstorage_bucket" "bucket" {
     compartment_id = var.compartment_ocid
     namespace = data.oci_objectstorage_namespace.ns.namespace
     name = "alephium-media"
-    access_type = "Private"
+    access_type = "NoPublicAccess"
     storage_tier = "Standard"
 }

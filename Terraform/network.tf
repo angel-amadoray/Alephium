@@ -32,7 +32,7 @@ resource "oci_core_subnet" "alephium_web_subnet" {
   vcn_id            = oci_core_vcn.alephium_vcn.id
   display_name      = "alephium_web_subnet"
   cidr_block        = "10.0.1.0/24"
-  dns_label         = "alephiumwebsubnet"
+  dns_label         = "web"
   route_table_id    = oci_core_route_table.alephium_web_rt.id
   security_list_ids = [oci_core_security_list.alephium_web_sl.id]
 }
@@ -43,7 +43,7 @@ resource "oci_core_subnet" "alephium_app_subnet" {
   vcn_id            = oci_core_vcn.alephium_vcn.id
   cidr_block        = "10.0.2.0/24"
   display_name      = "alephium_app_subnet"
-  dns_label         = "alephiumappsubnet"
+  dns_label         = "app"
   security_list_ids = [oci_core_security_list.alephium_app_sl.id]
 }
 
@@ -53,7 +53,7 @@ resource "oci_core_subnet" "alephium_db_subnet" {
   vcn_id            = oci_core_vcn.alephium_vcn.id
   cidr_block        = "10.0.3.0/24"
   display_name      = "alephium_db_subnet"
-  dns_label         = "alephiumdbsubnet"
+  dns_label         = "db"
   security_list_ids = [oci_core_security_list.alephium_db_sl.id]
 }
 
