@@ -6,8 +6,8 @@
 <article class="author-detail">
     <div class="author-header">
         <div class="author-photo">
-            {% if author.photo %}
-                <img src="{{ author.photo.url }}" alt="{{ author.name }} photo">
+            {% if author.image %}
+                <img src="{{ author.image.url }}" alt="{{ author.name }} photo">
             {% else %}
                 <div class="no-photo">No photo</div>
             {% endif %}
