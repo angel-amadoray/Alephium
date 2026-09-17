@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Author, Review, Book
+from .models import Author, Review, Book
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
@@ -9,7 +9,7 @@ class AuthorAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
     @admin.display(description='Number of books')
-    def boook_count(self, obj):
+    def book_count(self, obj):
         return obj.books.count()
 
 @admin.register(Book)
