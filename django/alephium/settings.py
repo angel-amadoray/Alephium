@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': os.getenv('LOCAL_DATABASE_NAME'),
         'USER': os.getenv('LOCAL_DATABASE_USERNAME'),
         'PASSWORD': os.getenv('LOCAL_DATABASE_PASSWORD'),
-        'HOST': '127.0.0.1',  # 127.0.0.1 en lugar de localhost para forzar TCP
+        'HOST': os.getenv('LOCAL_DATABASE_HOST'),
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4', 
