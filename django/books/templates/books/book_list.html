@@ -1,0 +1,47 @@
+{% extends 'books/base.html' %}
+
+{% block title %}Catálogo de Libros{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Book Catalog</h1>
+    <p class="subtitle">{{ total_books }} available books</p>
+</section>
+
+<section class="book-grid">
+    {% for book in page_obj %}
+        <article class="book-card">
+            <a href="{% url 'books:book_detail' book.pk %}" class="book-cover">
+                {% if book.cover %}
+                    <img src="{{ book.cover.url }}" alt="Portada de {{ book.title }}">
+                {% else %}
+                    <div class="no-cover">No cover available</div>
+                {% endif %}
+            </a>
+            <div class="book-info">
+                <h2><a href="{% url 'books:book_detail' book.pk %}">{{ book.title }}</a></h2>
+                <p class="author">
+                    by <a href="{% url 'books:author_detail' book.author.pk %}">{{ book.author.name }}</a>
+                </p>
+                <p class="price">{{ book.price }} €</p>
+            </div>
+        </article>
+    {% empty %}
+        <p class="empty">No books were found.</p>
+    {% endfor %}
+</section>
+
+{% if page_obj.has_other_pages %}
+<nav class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">← Anterior</a>
+    {% endif %}
+    
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+    {% endif %}
+</nav>
+{% endif %}
+{% endblock %}

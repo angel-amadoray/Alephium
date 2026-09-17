@@ -1,0 +1,54 @@
+{% extends 'books/base.html' %}
+
+{% block title %}{{ author.name }}{% endblock %}
+
+{% block content %}
+<article class="author-detail">
+    <div class="author-header">
+        <div class="author-photo">
+            {% if author.photo %}
+                <img src="{{ author.photo.url }}" alt="{{ author.name }} photo">
+            {% else %}
+                <div class="no-photo">No photo</div>
+            {% endif %}
+        </div>
+        <div class="author-info">
+            <h1>{{ author.name }}</h1>
+            {% if author.birth_date %}
+                <p><strong>Birth date:</strong> {{ author.birth_date }}</p>
+            {% endif %}
+            {% if author.bio %}
+                <div class="bio">
+                    <h2>Biography</h2>
+                    <p>{{ author.bio }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <section class="author-books">
+        <h2>{{ author.name }} books ({{ author.books.count }})</h2>
+        <div class="book-grid">
+            {% for book in author.books.all %}
+                <article class="book-card">
+                    <a href="{% url 'books:book_detail' book.pk %}" class="book-cover">
+                        {% if book.cover %}
+                            <img src="{{ book.cover.url }}" alt="Portada de {{ book.title }}">
+                        {% else %}
+                            <div class="no-cover">No cover</div>
+                        {% endif %}
+                    </a>
+                    <div class="book-info">
+                        <h3><a href="{% url 'books:book_detail' book.pk %}">{{ book.title }}</a></h3>
+                        <p class="price">${{ book.price }}</p>
+                    </div>
+                </article>
+            {% empty %}
+                <p class="empty">This author has no books yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <p><a href="{% url 'books:book_list' %}">← Back to Catalog</a></p>
+</article>
+{% endblock %}

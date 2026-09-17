@@ -1,0 +1,60 @@
+{% extends 'books/base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<article class="book-detail">
+    <div class="book-detail-header">
+        <div class="book-detail-cover">
+            {% if book.cover %}
+                <img src="{{ book.cover.url }}" alt="{{ book.title }} Cover">
+            {% else %}
+                <div class="no-cover">No Cover</div>
+            {% endif %}
+        </div>
+        <div class="book-detail-info">
+            <h1>{{ book.title }}</h1>
+            <p class="author">
+                by <a href="{% url 'books:author_detail' book.author.pk %}">{{ book.author.name }}</a>
+            </p>
+            <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+            <p><strong>Publish Date:</strong> {{ book.published_date }}</p>
+            <p><strong>Price:</strong> ${{ book.price }} </p>
+            <p><strong>Stock:</strong> {{ book.stock }} units</p>
+
+            {% if avg_rating %}
+                <p class="rating">
+                    <strong>Rating:</strong>
+                    {{ avg_rating|floatformat:1 }} / 5
+                    ({{ reviews.count }} review{{ reviews.count|pluralize:"s" }})
+                </p>
+            {% endif %}
+
+            {% if book.description %}
+                <div class="description">
+                    <h2>Description</h2>
+                    <p>{{ book.description }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <section class="reviews">
+        <h2>Reviews</h2>
+        {% for review in reviews %}
+            <div class="review">
+                <div class="review-header">
+                    <strong>{{ review.user.username }}</strong>
+                    <span class="review-rating">{{ review.rating }} / 5</span>
+                    <span class="review-date">{{ review.created_at|date:"d M Y" }}</span>
+                </div>
+                <p>{{ review.comment }}</p>
+            </div>
+        {% empty %}
+            <p class="empty">No reviews found for this book.</p>
+        {% endfor %}
+    </section>
+
+    <p><a href="{% url 'books:book_list' %}">← Back to Catalog</a></p>
+</article>
+{% endblock %}
