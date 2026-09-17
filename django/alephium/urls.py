@@ -23,6 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-# only for dev
+# only for dev, then will use bucket
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
