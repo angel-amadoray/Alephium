@@ -18,7 +18,7 @@
                 <p><strong>Birth date:</strong> {{ author.birth_date }}</p>
             {% endif %}
             {% if author.bio %}
-                <div class="bio">
+                <div class="bio description">
                     <h2>Biography</h2>
                     <p>{{ author.bio }}</p>
                 </div>
@@ -27,28 +27,34 @@
     </div>
 
     <section class="author-books">
-        <h2>{{ author.name }} books ({{ author.books.count }})</h2>
+        <div class="page-header">
+            <h2>{{ author.name }} books ({{ author.books.count }})</h2>
+        </div>
         <div class="book-grid">
             {% for book in author.books.all %}
                 <article class="book-card">
                     <a href="{% url 'books:book_detail' book.pk %}" class="book-cover">
                         {% if book.cover %}
-                            <img src="{{ book.cover.url }}" alt="Portada de {{ book.title }}">
+                            <img src="{{ book.cover.url }}" alt="Cover of {{ book.title }}" loading="lazy">
                         {% else %}
                             <div class="no-cover">No cover</div>
                         {% endif %}
                     </a>
                     <div class="book-info">
                         <h3><a href="{% url 'books:book_detail' book.pk %}">{{ book.title }}</a></h3>
-                        <p class="price">${{ book.price }}</p>
+                        <div class="book-footer-info">
+                            <p class="price">${{ book.price }}</p>
+                        </div>
                     </div>
                 </article>
             {% empty %}
-                <p class="empty">This author has no books yet.</p>
+                <div class="empty-container">
+                    <p class="empty">This author has no books yet.</p>
+                </div>
             {% endfor %}
         </div>
     </section>
 
-    <p><a href="{% url 'books:book_list' %}">← Back to Catalog</a></p>
+    <p class="back-link"><a href="{% url 'books:book_list' %}">← Back to Catalog</a></p>
 </article>
 {% endblock %}

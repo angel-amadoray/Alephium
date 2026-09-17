@@ -1,6 +1,6 @@
 {% extends 'books/base.html' %}
 
-{% block title %}Catálogo de Libros{% endblock %}
+{% block title %}Book Catalog{% endblock %}
 
 {% block content %}
 <section class="page-header">
@@ -13,7 +13,7 @@
         <article class="book-card">
             <a href="{% url 'books:book_detail' book.pk %}" class="book-cover">
                 {% if book.cover %}
-                    <img src="{{ book.cover.url }}" alt="Portada de {{ book.title }}">
+                    <img src="{{ book.cover.url }}" alt="Cover of {{ book.title }}" loading="lazy">
                 {% else %}
                     <div class="no-cover">No cover available</div>
                 {% endif %}
@@ -23,24 +23,32 @@
                 <p class="author">
                     by <a href="{% url 'books:author_detail' book.author.pk %}">{{ book.author.name }}</a>
                 </p>
-                <p class="price">{{ book.price }} €</p>
+                <div class="book-footer-info">
+                    <p class="price">{{ book.price }} €</p>
+                </div>
             </div>
         </article>
     {% empty %}
-        <p class="empty">No books were found.</p>
+        <div class="empty-container">
+            <p class="empty">No books were found.</p>
+        </div>
     {% endfor %}
 </section>
 
 {% if page_obj.has_other_pages %}
-<nav class="pagination">
+<nav class="pagination" aria-label="Pagination">
     {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">← Anterior</a>
+        <a href="?page={{ page_obj.previous_page_number }}">← Previous</a>
+    {% else %}
+        <span class="page-btn disabled">← Previous</span>
     {% endif %}
     
-    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    <span class="page-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
     
     {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+    {% else %}
+        <span class="page-btn disabled">Next →</span>
     {% endif %}
 </nav>
 {% endif %}

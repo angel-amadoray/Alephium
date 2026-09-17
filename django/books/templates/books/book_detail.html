@@ -17,18 +17,21 @@
             <p class="author">
                 by <a href="{% url 'books:author_detail' book.author.pk %}">{{ book.author.name }}</a>
             </p>
-            <p><strong>ISBN:</strong> {{ book.isbn }}</p>
-            <p><strong>Publish Date:</strong> {{ book.published_date }}</p>
-            <p><strong>Price:</strong> ${{ book.price }} </p>
-            <p><strong>Stock:</strong> {{ book.stock }} units</p>
+            
+            <div class="book-meta">
+                <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+                <p><strong>Publish Date:</strong> {{ book.published_date }}</p>
+                <p><strong>Price:</strong> ${{ book.price }}</p>
+                <p><strong>Stock:</strong> {{ book.stock }} units</p>
 
-            {% if avg_rating %}
-                <p class="rating">
-                    <strong>Rating:</strong>
-                    {{ avg_rating|floatformat:1 }} / 5
-                    ({{ reviews.count }} review{{ reviews.count|pluralize:"s" }})
-                </p>
-            {% endif %}
+                {% if avg_rating %}
+                    <p class="rating">
+                        <strong>Rating:</strong>
+                        {{ avg_rating|floatformat:1 }} / 5
+                        ({{ reviews.count }} review{{ reviews.count|pluralize:"s" }})
+                    </p>
+                {% endif %}
+            </div>
 
             {% if book.description %}
                 <div class="description">
@@ -45,7 +48,7 @@
             <div class="review">
                 <div class="review-header">
                     <strong>{{ review.user.username }}</strong>
-                    <span class="review-rating">{{ review.rating }} / 5</span>
+                    <span class="review-rating">★ {{ review.rating }} / 5</span>
                     <span class="review-date">{{ review.created_at|date:"d M Y" }}</span>
                 </div>
                 <p>{{ review.comment }}</p>
@@ -55,6 +58,6 @@
         {% endfor %}
     </section>
 
-    <p><a href="{% url 'books:book_list' %}">← Back to Catalog</a></p>
+    <p class="back-link"><a href="{% url 'books:book_list' %}">← Back to Catalog</a></p>
 </article>
 {% endblock %}
