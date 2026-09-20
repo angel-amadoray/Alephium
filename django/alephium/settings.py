@@ -77,22 +77,20 @@ WSGI_APPLICATION = 'alephium.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# using MySql for local only
-
-import pymysql
-pymysql.install_as_MySQLdb()
+WALLET_DIR = BASE_DIR / 'wallet'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('LOCAL_DATABASE_NAME'),
-        'USER': os.getenv('LOCAL_DATABASE_USERNAME'),
-        'PASSWORD': os.getenv('LOCAL_DATABASE_PASSWORD'),
-        'HOST': os.getenv('LOCAL_DATABASE_HOST'),
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': os.getenv('ORACLE_DB_NAME'),
+        'USER': os.getenv('ORACLE_DB_USER'),
+        'PASSWORD': os.getenv('ORACLE_DB_PASSWORD'),
+        'HOST': '', #both managed by tns
+        'PORT': '',
         'OPTIONS': {
-            'charset': 'utf8mb4', 
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'config_dir': str(WALLET_DIR),
+            'wallet_location': str(WALLET_DIR),
+            'wallet_password': os.getenv('ORACLE_WALLET_PASSWORD'),
         },
     }
 }
