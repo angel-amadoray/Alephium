@@ -219,6 +219,8 @@ __marimo__/
 
 media/
 
+wallet/
+
 # Terraform
 *.tfstate
 *.tfstate.*
