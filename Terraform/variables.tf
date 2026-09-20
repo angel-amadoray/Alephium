@@ -37,3 +37,8 @@ variable "db_password" {
     description = "Password for the database."
     type = string
 }
+
+variable "dev_ip_address" {
+    description = "IP address of the developer machine."
+    type = string
+}
