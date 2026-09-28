@@ -95,6 +95,36 @@ DATABASES = {
     }
 }
 
+# media bucket configuration
+# OCI OBJECT STORAGE 
+OCI_NAMESPACE = os.getenv("OCI_NAMESPACE")
+OCI_BUCKET_NAME = os.getenv("OCI_BUCKET_NAME")
+OCI_REGION = os.getenv("OCI_REGION")
+OCI_SECRET_KEY = os.getenv("OCI_CUSTOMER_SECRET_KEY")
+OCI_ACCESS_KEY = os.getenv("OCI_CUSTOMER_ACCESS_KEY")
+OCI_NAMESPACE = os.getenv("OCI_NAMESPACE")
+OCI_BUCKET_ENDPOINT_URL = f"https://{OCI_NAMESPACE}.compat.objectstorage.{OCI_REGION}.oraclecloud.com"
+
+# OCI doesnt suppot aws checksums, so we have to disable them
+os.environ['AWS_REQUEST_CHECKSUM_CALCULATION'] = 'when_required'
+os.environ['AWS_RESPONSE_CHECKSUM_VALIDATION'] = 'when_required'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": OCI_ACCESS_KEY,
+            "secret_key":  OCI_SECRET_KEY,
+            "bucket_name": OCI_BUCKET_NAME,
+            "region_name": OCI_REGION,
+            "endpoint_url": OCI_BUCKET_ENDPOINT_URL
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -134,8 +164,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # media uploaded by users (covers, authors, etc)
-MEDIA_URL = '/media/'
+MEDIA_URL = f'/media/'
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
