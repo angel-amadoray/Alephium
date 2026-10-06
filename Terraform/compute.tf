@@ -1,11 +1,7 @@
-# oracle linux 8
-data "oci_core_images" "ol8" {
-  compartment_id           = var.compartment_ocid
-  operating_system         = "Oracle Linux"
-  operating_system_version = "8"
-  shape                    = "VM.Standard.E2.1.Micro"
-  sort_by                  = "TIMECREATED"
-  sort_order               = "DESC"
+# fixed Oracle Linux 8 image and instance shape
+locals {
+  ol8_image_id = "ocid1.image.oc1.phx.aaaaaaaaloo3boixuzqoeeslb7cxzjchvb37qh34zbjece2rsw3c3aaclzka"
+  instance_shape = "VM.Standard.E2.1.Micro"
 }
 
 # obtain available ads
@@ -17,9 +13,7 @@ data "oci_identity_availability_domains" "ads" {
 resource "oci_core_instance" "web_instance" {
   compartment_id      = var.compartment_ocid
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  /*   shape               = "VM.Standard.A1.Flex" */
-  /* shape        = "VM.Standard.E2.1.Micro" */
-  shape        = data.oci_core_images.ol8.shape
+  shape        = local.instance_shape
   display_name = "web_instance"
 
   create_vnic_details {
@@ -30,15 +24,8 @@ resource "oci_core_instance" "web_instance" {
 
   source_details {
     source_type = "image"
-    source_id   = data.oci_core_images.ol8.images[0].id
+    source_id   = local.ol8_image_id
   }
-
-  // change to VM.Standard.E2.1.Micro
-  // cant change this values in this image
-  /* shape_config {
-    memory_in_gbs = 12
-    ocpus         = 2
-  } */
 
   # ssh key and initial script: todo
   metadata = {
@@ -53,7 +40,7 @@ resource "oci_core_instance" "web_instance" {
 resource "oci_core_instance" "app_instance" {
   compartment_id      = var.compartment_ocid
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  shape               = data.oci_core_images.ol8.shape
+  shape               = local.instance_shape
   display_name        = "app_instance"
 
   create_vnic_details {
@@ -64,14 +51,9 @@ resource "oci_core_instance" "app_instance" {
 
   source_details {
     source_type = "image"
-    source_id   = data.oci_core_images.ol8.images[0].id
+    source_id   = local.ol8_image_id
   }
-
-  /* shape_config {
-    memory_in_gbs = 12
-    ocpus         = 2
-  } */
-
+  
   # ssh key and initial script: todo
   metadata = {
     ssh_authorized_keys = var.ssh_public_key

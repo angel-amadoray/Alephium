@@ -16,12 +16,12 @@
 | RAM          | 1 GB                     |
 | Cost         | Free (Always Free)       |
 
-## Operating System Image
+## Operating System Image (static image)
 
 | Property         | Value                      |
 | ---------------- | -------------------------- |
-| Data Source      | `data.oci_core_images.ol8` |
-| Operating System | Oracle Linux 8             |
+| OCID             | `ocid1.image.oc1.phx.aaaaaaaaloo3boixuzqoeeslb7cxzjchvb37qh34zbjece2rsw3c3aaclzka` |
+| Operating System | Oracle-Linux-8.10-2026.08.14-0             |
 | Filter by shape  | `VM.Standard.E2.1.Micro`   |
 
 ## cloud-init Scripts
